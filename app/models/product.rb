@@ -7,4 +7,8 @@ class Product < ApplicationRecord
     validates :image
   end
   has_one_attached :image
+  scope :price_high_to_low, -> { order(price: :desc) }
+  scope :price_low_to_high, -> { order(price: :asc) }
 end
+
+# price_high_to_low は価格を降順に、price_low_to_high は価格を昇順にして product を取得することができます。
