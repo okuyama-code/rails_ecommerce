@@ -1,5 +1,6 @@
 class Admin::ProductsController < ApplicationController
-  # 商品を閲覧・作成・編集する機能はログイン済の管理者のみ権限を付与する形にしますので、authenticate_admin! を記述しました。authenticate_admin! の admin はモデル名になります。
+  # 商品を閲覧・作成・編集する機能はログイン済の管理者のみ権限を付与する形にしますので、
+  # authenticate_admin!を記述しました。authenticate_admin!のadminはモデル名になります。
   before_action :authenticate_admin!
   before_action :set_product, only: %i[show edit update]
 
