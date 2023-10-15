@@ -6,6 +6,7 @@ class Customer::CartItemsController < ApplicationController
   def index
     # この変数　current_customer.cart_itemsにはログインしている顧客のショッピングカート内の各商品の情報や数量などが含まれる
     @cart_items = current_customer.cart_items
+    @total = @cart_items.inject(0) { |sum, cart_item| sum + cart_item.line_total }
   end
 
   def create
