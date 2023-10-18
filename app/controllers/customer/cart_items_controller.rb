@@ -1,10 +1,12 @@
 class Customer::CartItemsController < ApplicationController
-  # current_customer に現在ログインしている顧客の情報が格納されるようにしています。(全アクション)
+  # current_customer に現在ログインしている顧客の情報しか見れないように制限している。が格納されるようにしています。(全アクション)
   before_action :authenticate_customer!
   before_action :set_cart_item, only: %i[increase decrease destroy]
 
   def index
+    # indexが呼ばれたときに入る
     # この変数　current_customer.cart_itemsにはログインしている顧客のショッピングカート内の各商品の情報や数量などが含まれる
+    # @cart_items = Customer.find_by(id: 1).cart_items
     @cart_items = current_customer.cart_items
     @total = @cart_items.inject(0) { |sum, cart_item| sum + cart_item.line_total }
   end
@@ -47,14 +49,13 @@ class Customer::CartItemsController < ApplicationController
       #カート内商品を新たに作成しています。current_customer.cart_items.build と書くことで、現在ログインしている顧客に紐づける（customer_id に current_customer の id をセットする）ことができます。あとは、product_id をセットして、保存すれば新たにカート内商品が作成されるというわけです。（quantity にはデフォルト値である 1 がセットされています。）
       current_customer.cart_items.build(product_id:).save
     end
+  end
 
-    def decrease_or_destroy(cart_item)
-      if cart_item.quantity > 1
-        cart_item.decrement!(:quantity, 1)
-      else
-        cart_item.destroy
-      end
+  def decrease_or_destroy(cart_item)
+    if cart_item.quantity > 1
+      cart_item.decrement!(:quantity, 1)
+    else
+      cart_item.destroy
     end
-
   end
 end
